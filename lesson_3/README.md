@@ -41,7 +41,7 @@
 ---
 ### Ответ:        
 Для добавления ресурсов процессора(`vb.cpus`) и оперативной памяти(`vb.memory`), необходимо добавить следующий код в ***Vagrantfile***
-```
+```bash
 Vagrant.configure("2") do |config|
 # здесь может быть какой-то код
     config.vm.provider "virtualbox" do |vb|
@@ -78,7 +78,7 @@ end
 Описание на строке 891.
 
 **Например:**
-```
+```bash
 mkdir /tmp/{old,new,dist,bugs}
 ```
 Данная команда создаст 4 каталога `old,new,dist,bugs` по пути `/tmp/`
@@ -98,12 +98,12 @@ mkdir /tmp/{old,new,dist,bugs}
 
 Конструкция `[[ -d /tmp ]]` проверяет что путь `/tmp` существует и являеться каталогом.
 Можно проверить следующим образом:
-```
+```bash
 if [[ -d /tmp ]]; then echo true; else echo false; fi
 ```
 вернет `true`
 
-```
+```bash
 if [[ -d /tmp/test.txt ]]; then echo true; else echo false; fi
 ```
 вернет `false`
