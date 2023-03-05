@@ -11,7 +11,10 @@
 ---
 
 ### Ответ:
+*unit*-файл
+![node-exporter-service](assets/img/node-exporter-service.png)
 
+Старт, статус, автостарт
 ![node-exporter](assets/img/node-exporter.png)
 
 ----
