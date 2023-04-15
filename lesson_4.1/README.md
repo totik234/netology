@@ -47,13 +47,24 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+
+bash_command = ["cd ./","git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('\tmodified:   ', '')
+        print(prepare_result)
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
-```
-???
+```zsh
+➜  netology git:(main) ✗ /usr/local/bin/python3 /Users/dshulc/Study/netology/lesson_4.1/main.py
+lesson_4.1/README.md
 ```
 
 ------
@@ -65,15 +76,48 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import sys
+
+path = "./"
+
+if len(sys.argv) >= 2:
+    path = sys.argv[1]
+    if not os.path.isdir(path):
+        sys.exit("Directory doesn't exist: " + path)
+
+bash_command = ["cd " + path, "git status 2>&1"]
+git_command = ["git rev-parse --show-toplevel"]
+
+
+result_os = os.popen(' && '.join(bash_command)).read()
+if result_os.find('not a git') != -1:
+    sys.exit("not a git repository: " + path)
+
+git_top_level = (os.popen(' && '.join(git_command)).read()).replace('\n', '/')
+
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('\tmodified:   ', '')
+        print(git_top_level + prepare_result)
+
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
-```
-???
+без аргументов
+```zsh
+➜  netology git:(main) ✗ /usr/local/bin/python3 /Users/dshulc/Study/netology/lesson_4.1/main.py
+/Users/dshulc/Study/netology/lesson_4.1/README.md
 ```
 
+с аргументами
+```zsh
+➜  netology git:(main) ✗ /usr/local/bin/python3 /Users/dshulc/Study/netology/lesson_4.1/main.py /Users/dshulc/Study/netology/
+/Users/dshulc/Study/netology/lesson_4.1/README.md
+```
 ------
 
 ## Задание 4
@@ -93,13 +137,69 @@ for result in result_os.split('\n'):
 ### Ваш скрипт:
 
 ```python
-???
+import socket
+import time
+
+service_addr = {
+    'drive.google.com': '0',
+    'mail.google.com': '0',
+    'google.com': '0'
+}
+
+for item in service_addr:
+    initial_addr = socket.gethostbyname(item)
+    service_addr[item] = initial_addr
+
+while True:
+    for item in service_addr:
+        old_addr = service_addr[item]
+        new_addr = socket.gethostbyname(item)
+        if new_addr != old_addr:
+            service_addr[item] = new_addr
+            print("[ERROR] "+item+" IP mismatch: old IP "+old_addr+", new IP "+new_addr)
+        print(item + " - " + service_addr[item])
+    print("######################################")
+    time.sleep(10)
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+######################################
+drive.google.com - 64.233.162.194
+mail.google.com - 173.194.222.19
+google.com - 108.177.14.139
+######################################
+drive.google.com - 64.233.162.194
+mail.google.com - 173.194.222.19
+google.com - 108.177.14.139
+######################################
+drive.google.com - 64.233.162.194
+mail.google.com - 173.194.222.19
+google.com - 108.177.14.139
+######################################
+drive.google.com - 64.233.162.194
+mail.google.com - 173.194.222.19
+google.com - 108.177.14.139
+######################################
+drive.google.com - 64.233.162.194
+mail.google.com - 173.194.222.19
+google.com - 108.177.14.139
+######################################
+[ERROR] drive.google.com IP mismatch: old IP 64.233.162.194, new IP 216.58.212.142
+drive.google.com - 216.58.212.142
+[ERROR] mail.google.com IP mismatch: old IP 173.194.222.19, new IP 142.250.185.165
+mail.google.com - 142.250.185.165
+[ERROR] google.com IP mismatch: old IP 108.177.14.139, new IP 172.217.18.14
+google.com - 172.217.18.14
+######################################
+[ERROR] drive.google.com IP mismatch: old IP 216.58.212.142, new IP 64.233.162.194
+drive.google.com - 64.233.162.194
+[ERROR] mail.google.com IP mismatch: old IP 142.250.185.165, new IP 64.233.165.18
+mail.google.com - 64.233.165.18
+[ERROR] google.com IP mismatch: old IP 172.217.18.14, new IP 64.233.161.101
+google.com - 64.233.161.101
+######################################
 ```
 
 ------
