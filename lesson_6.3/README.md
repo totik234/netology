@@ -18,6 +18,9 @@
 
 ### Ответ:
 ---
+
+[docker-compose](assets/docker-compose/docker-compose.yml)
+
 - вывода списка БД
   - ![db_list](assets/img/db_list.png)
 - подключения к БД
