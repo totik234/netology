@@ -125,6 +125,8 @@ shekeriev.
 
 ### Ответ:
 ---
+Код проекта [main.tf](assets/terraform/main.tf)
+
 `terraform plan`
 
 ![tf_over_1](assets/img/tf_over_1.png)
