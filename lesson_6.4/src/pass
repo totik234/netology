@@ -1,0 +1,25 @@
+8raTZRyHGW-awuulkae9
+
+curl -X POST --insecure -u elastic "https://localhost:9200/_snapshot/netology_backup/my_snapshot_2023.07.28/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "*",
+  "include_global_state": true
+}
+'
+
+curl -X GET --insecure -u elastic "https://localhost:9200/_cat/indices?v=true"
+
+curl -X DELETE --insecure -u elastic "https://localhost:9200/ind-1?pretty"
+
+curl -X PUT --insecure -u elastic "https://localhost:9200/test-2?pretty" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,  
+      "number_of_replicas": 0 
+    }
+  }
+}
+'
+
+curl -X GET --insecure -u elastic "https://localhost:9200/_snapshot/netology_backup/*?verbose=false&pretty"
