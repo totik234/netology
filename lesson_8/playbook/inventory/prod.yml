@@ -1,0 +1,13 @@
+---
+  el:
+    hosts:
+      centos7:
+        ansible_host: 158.160.74.240
+  deb:
+    hosts:
+      ubuntu:
+        ansible_host: 158.160.31.156
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
