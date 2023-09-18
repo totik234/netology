@@ -20,8 +20,120 @@
 
 ---
 
-### Как оформить решение задания
-
-Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
+### Ответ:
 
 ---
+- Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает LightHouse.
+<details>
+  <summary>lighthouse tasks</summary>
+
+```yaml
+- name: Install nginx
+  hosts: lighthouse
+  become: true
+  tags: lighthouse
+  handlers:
+    - name: Started nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+    - name: Start reloaded
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+  tasks:
+    - name: Intsall epel-release
+      become: true
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+    - name: Intsall nginx
+      become: true
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+      notify: Started nginx
+    - name: Configure nginx
+      become: true
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        mode: "0644"
+      notify: Start reloaded
+
+- name: Install lighthouse
+  hosts: lighthouse
+  become: true
+  tags: lighthouse
+  handlers:
+    - name: Start reloaded
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+  pre_tasks:
+    - name: Install git
+      become: true
+      ansible.builtin.dnf:
+        name: git
+        state: present
+  tasks:
+    - name: Get ligthhouse repo
+      ansible.builtin.git:
+        repo: "{{ lighthouse_repo }}"
+        version: master
+        dest: "{{ lighthouse_dir }}"
+    - name: Configure lighthouse
+      ansible.builtin.template:
+        src: lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+        mode: "0644"
+      notify: Start reloaded
+
+```
+</details>
+
+---
+
+- Подготовьте свой inventory-файл `prod.yml`.
+<details>
+  <summary>prod.yml</summary>
+
+```yaml
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+vector:
+  hosts:
+    vector-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+lighthouse:
+  hosts:
+    lighthouse-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+```
+</details>
+
+---
+
+- Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.
+  ![lint](assets/img/lint.png)
+
+---
+
+- Попробуйте запустить playbook на этом окружении с флагом `--check`.
+  ![check](assets/img/check.png)
+
+---
+
+- Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.
+  ![diff](assets/img/diff.png)
+
+---
+- [README.md-файл](playbook/README.md) по playbook.

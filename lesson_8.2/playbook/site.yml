@@ -44,6 +44,12 @@
   hosts: vector
   become: true
   tags: vector
+  handlers:
+    - name: Start vector service
+      become: true
+      ansible.builtin.service:
+        name: vector
+        state: restarted
   tasks:
     - name: Get vector distrib
       ansible.builtin.get_url:
@@ -65,6 +71,9 @@
         src: vector.service.j2
         dest: "/etc/systemd/system/vector.service"
         mode: "0644"
+      notify: Start vector service
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
     - name: Start vector as service
       ansible.builtin.systemd:
         state: restarted
@@ -73,14 +82,18 @@
         name: vector
 
 - name: Install nginx
-  hosts: ligthhouse
+  hosts: lighthouse
   become: true
-  tags: ligthhouse
+  tags: lighthouse
   handlers:
-    - name: Start nginx
+    - name: Started nginx
       ansible.builtin.service:
         name: nginx
         state: started
+    - name: Start reloaded
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
   tasks:
     - name: Intsall epel-release
       become: true
@@ -92,3 +105,39 @@
       ansible.builtin.dnf:
         name: nginx
         state: present
+      notify: Started nginx
+    - name: Configure nginx
+      become: true
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        mode: "0644"
+      notify: Start reloaded
+
+- name: Install lighthouse
+  hosts: lighthouse
+  become: true
+  tags: lighthouse
+  handlers:
+    - name: Start reloaded
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+  pre_tasks:
+    - name: Install git
+      become: true
+      ansible.builtin.dnf:
+        name: git
+        state: present
+  tasks:
+    - name: Get ligthhouse repo
+      ansible.builtin.git:
+        repo: "{{ lighthouse_repo }}"
+        version: master
+        dest: "{{ lighthouse_dir }}"
+    - name: Configure lighthouse
+      ansible.builtin.template:
+        src: lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+        mode: "0644"
+      notify: Start reloaded
