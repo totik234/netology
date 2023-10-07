@@ -1,0 +1,19 @@
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+vector:
+  hosts:
+    vector-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+lighthouse:
+  hosts:
+    lighthouse-01:
+      ansible_host: <ip>
+      # host_key_checking: False
+      # ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
