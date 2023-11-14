@@ -1,0 +1,32 @@
+---
+# tasks file for vector
+- name: Get vector distrib
+  ansible.builtin.get_url:
+    url: "https://github.com/vectordotdev/vector/releases/download/v{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+    dest: ./vector-{{ vector_version }}-1.x86_64.rpm
+    mode: "0644"
+- name: Install vector
+  ansible.builtin.dnf:
+    name:
+      - vector-{{ vector_version }}-1.x86_64.rpm
+    disable_gpg_check: true
+- name: Configure vector
+  ansible.builtin.template:
+    src: "{{ vector_config }}"
+    dest: "{{ vector_config_dir }}/vector.toml"
+    mode: "0644"
+    # remote_src: false
+- name: Configure vector service
+  ansible.builtin.template:
+    src: vector.service.j2
+    dest: "/etc/systemd/system/vector.service"
+    mode: "0644"
+  notify: Start vector service
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+- name: Start vector as service
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: true
+    enabled: true
+    name: vector

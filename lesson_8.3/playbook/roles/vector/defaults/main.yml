@@ -1,0 +1,5 @@
+---
+# defaults file for vector
+vector_version: "0.32.1"
+vector_config_dir: /etc/vector
+vector_config: templates/vector.toml.j2
