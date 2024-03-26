@@ -1,16 +1,4 @@
 # Домашнее задание к занятию 9 «Процессы CI/CD»
-
-## Подготовка к выполнению
-
-1. Создайте два VM в Yandex Cloud с параметрами: 2CPU 4RAM Centos7 (остальное по минимальным требованиям).
-2. Пропишите в [inventory](./infrastructure/inventory/cicd/hosts.yml) [playbook](./infrastructure/site.yml) созданные хосты.
-3. Добавьте в [files](./infrastructure/files/) файл со своим публичным ключом (id_rsa.pub). Если ключ называется иначе — найдите таску в плейбуке, которая использует id_rsa.pub имя, и исправьте на своё.
-4. Запустите playbook, ожидайте успешного завершения.
-5. Проверьте готовность SonarQube через [браузер](http://localhost:9000).
-6. Зайдите под admin\admin, поменяйте пароль на свой.
-7.  Проверьте готовность Nexus через [бразуер](http://localhost:8081).
-8. Подключитесь под admin\admin123, поменяйте пароль, сохраните анонимный доступ.
-
 ## Знакомоство с SonarQube
 
 ### Основная часть
@@ -24,6 +12,27 @@
 7. Исправьте ошибки, которые он выявил, включая warnings.
 8. Запустите анализатор повторно — проверьте, что QG пройдены успешно.
 9. Сделайте скриншот успешного прохождения анализа, приложите к решению ДЗ.
+
+### Ответ:
+---
+Я воспользовался docker
+```
+docker run \
+    --rm \
+    -e SONAR_HOST_URL="http://xxx.xxx.xxx.xxx:9000" \
+    -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=netologi" \
+    -e SONAR_TOKEN="secret" \
+    -v "./:/usr/src" \
+    sonarsource/sonar-scanner-cli -Dsonar.coverage.exclusions=/usr/src/fail.py
+```
+
+![sonarcube1](assets/img/sonarcube1.png)
+![sonarcube2](assets/img/sonarcube2.png)
+
+Исправленный [fail.py](example/fail.py)
+
+![sonarcube3](assets/img/sonarcube3.png)
+---
 
 ## Знакомство с Nexus
 
@@ -41,6 +50,15 @@
 3. Проверьте, что все файлы загрузились успешно.
 4. В ответе пришлите файл `maven-metadata.xml` для этого артефекта.
 
+
+### Ответ:
+---
+![nexus1](assets/img/nexus1.png)
+
+Файл [maven-metadata](assets/files/maven-metadata.xml)
+
+---
+
 ### Знакомство с Maven
 
 ### Подготовка к выполнению
@@ -57,6 +75,15 @@
 2. Запустите команду `mvn package` в директории с `pom.xml`, ожидайте успешного окончания.
 3. Проверьте директорию `~/.m2/repository/`, найдите ваш артефакт.
 4. В ответе пришлите исправленный файл `pom.xml`.
+
+### Ответ:
+---
+
+Директория `~/.m2/repository/`
+
+![maven1](assets/img/maven1.png)
+
+Файл [pom.xml](mvn/pom.xml)
 
 ---
 
