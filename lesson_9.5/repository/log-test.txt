@@ -1,0 +1,55 @@
+[0KRunning with gitlab-runner 16.10.0 (81ab07f6)[0;m
+[0K  on netology z4ZE2FUoB, system ID: s_d8c95f7d1c6c[0;m
+section_start:1713039680:prepare_executor
+[0K[0K[36;1mPreparing the "docker" executor[0;m[0;m
+[0KUsing Docker executor with image curlimages/curl ...[0;m
+[0KStarting service netologyhw.gitlab.yandexcloud.net/dshulc/netology/netology:latest ...[0;m
+[0KAuthenticating with credentials from job payload (GitLab Registry)[0;m
+[0KPulling docker image netologyhw.gitlab.yandexcloud.net:5050/dshulc/netology/netology:latest ...[0;m
+[0KUsing docker image sha256:06342e8d6e7261e75587625e6deb2d26efe2a1c1495cadb248db9eb680d7133e for netologyhw.gitlab.yandexcloud.net:5050/dshulc/netology/netology:latest with digest netologyhw.gitlab.yandexcloud.net:5050/dshulc/netology/netology@sha256:e1b054f1c7b71aafd4bfaf20f60e606d15e9c879b6073db53992a9d2b8456dfa ...[0;m
+[0KWaiting for services to be up and running (timeout 30 seconds)...[0;m
+
+[0;33m*** WARNING:[0;m Service runner-z4ze2fuob-project-1-concurrent-0-6bcd0b4db63d52ea-netologyhw.gitlab.yandexcloud.net__dshulc__netology__netology-0 probably didn't start properly.
+
+Health check error:
+service "runner-z4ze2fuob-project-1-concurrent-0-6bcd0b4db63d52ea-netologyhw.gitlab.yandexcloud.net__dshulc__netology__netology-0-wait-for-service" health check: exit code 1
+
+Health check container logs:
+2024-04-13T20:22:35.838808533Z [31;1mFATAL: No HOST or PORT found                      [0;m
+
+Service container logs:
+2024-04-13T20:22:35.657948646Z  * Serving Flask app 'python-api'
+2024-04-13T20:22:35.658031170Z  * Debug mode: off
+2024-04-13T20:22:35.663093812Z [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2024-04-13T20:22:35.663153972Z  * Running on all addresses (0.0.0.0)
+2024-04-13T20:22:35.663157835Z  * Running on http://127.0.0.1:5290
+2024-04-13T20:22:35.663160171Z  * Running on http://172.17.0.2:5290
+2024-04-13T20:22:35.663162464Z [33mPress CTRL+C to quit[0m
+
+[0;33m*********[0;m
+
+[0KPulling docker image curlimages/curl ...[0;m
+[0KUsing docker image sha256:79009b90fb07c7eb584c840e9786116846190cc410f76ac70274e4d36dc6a652 for curlimages/curl with digest curlimages/curl@sha256:25d29daeb9b14b89e2fa8cc17c70e4b188bca1466086907c2d9a4b56b59d8e21 ...[0;m
+section_end:1713039757:prepare_executor
+[0Ksection_start:1713039757:prepare_script
+[0K[0K[36;1mPreparing environment[0;m[0;m
+Running on runner-z4ze2fuob-project-1-concurrent-0 via gitlab-runner...
+section_end:1713039757:prepare_script
+[0Ksection_start:1713039757:get_sources
+[0K[0K[36;1mGetting source from Git repository[0;m[0;m
+[32;1mFetching changes with git depth set to 20...[0;m
+Reinitialized existing Git repository in /builds/dshulc/netology/.git/
+[32;1mChecking out c6cd06d6 as detached HEAD (ref is main)...[0;m
+
+[32;1mSkipping Git submodules setup[0;m
+section_end:1713039758:get_sources
+[0Ksection_start:1713039758:step_script
+[0K[0K[36;1mExecuting "step_script" stage of the job script[0;m[0;m
+[0KUsing docker image sha256:79009b90fb07c7eb584c840e9786116846190cc410f76ac70274e4d36dc6a652 for curlimages/curl with digest curlimages/curl@sha256:25d29daeb9b14b89e2fa8cc17c70e4b188bca1466086907c2d9a4b56b59d8e21 ...[0;m
+[32;1m$ curl -ss http://python-api:5290/get_info | grep Running[0;m
+{"version": 3, "method": "GET", "message": "Running"}
+section_end:1713039759:step_script
+[0Ksection_start:1713039759:cleanup_file_variables
+[0K[0K[36;1mCleaning up project directory and file based variables[0;m[0;m
+section_end:1713039760:cleanup_file_variables
+[0K[32;1mJob succeeded[0;m
