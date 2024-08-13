@@ -1,0 +1,15 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  index.html: |
+    <html>
+    <head>
+      <title>Welcome to nginx!</title>
+    </head>
+    <body>
+      <h1>Success! The nginx server is working with ConfigMap!</h1>
+    </body>
+    </html>
