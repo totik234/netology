@@ -1,0 +1,12 @@
+
+# create-token живет 12 часов
+# export YC_TOKEN=$(yc iam create-token)
+# export YC_CLOUD_ID=$(yc config get cloud-id)
+# export YC_FOLDER_ID=$(yc config get folder-id)
+
+
+project_name    = "homework-netology"
+public_subnets  = ["192.168.10.0/24"]
+private_subnets = ["192.168.20.0/24"]
+default_zone    = "ru-central1-a"
+image_id        = "fd827b91d99psvq5fjit"
